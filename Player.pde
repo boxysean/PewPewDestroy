@@ -20,10 +20,12 @@ class Player {
     fill(colour);
 
     if (sideLeft) {
-      rect(HP_BAR_WIDTH + BAR_BUFFER, y - (PADDLE_HEIGHT/2), PADDLE_WIDTH, PADDLE_HEIGHT);
+      image(playerImage[id], HP_BAR_WIDTH + BAR_BUFFER, y - (PADDLE_HEIGHT/2));
+//      rect(HP_BAR_WIDTH + BAR_BUFFER, y - (PADDLE_HEIGHT/2), PADDLE_WIDTH, PADDLE_HEIGHT);
     } 
     else {
-      rect(width - HP_BAR_WIDTH - PADDLE_WIDTH - BAR_BUFFER, y - (PADDLE_HEIGHT/2), PADDLE_WIDTH, PADDLE_HEIGHT);
+      image(playerImage[id], width - HP_BAR_WIDTH - PADDLE_WIDTH - BAR_BUFFER, y - (PADDLE_HEIGHT/2));
+//      rect(width - HP_BAR_WIDTH - PADDLE_WIDTH - BAR_BUFFER, y - (PADDLE_HEIGHT/2), PADDLE_WIDTH, PADDLE_HEIGHT);
     }
   }
 
@@ -31,13 +33,25 @@ class Player {
     noStroke();
     fill(#00FF00);
 
-    float y = map(hp, 0, HP_MAX, height, 0);
+    float y = map(hp, 0, HP_MAX, glassHP[id].height, 0);
 
     if (sideLeft) {
-      rect(0, y, HP_BAR_WIDTH, height);
+      image(barHP, -1, y+10, barHP.width, height-bottomHP[id].height - 10-y);
+      image(bottomHP[id], -1, height-bottomHP[id].height - 10);
+      image(glassHP[id], 0, 0);
+      
+//      rect(0, y, HP_BAR_WIDTH, height);
     } 
     else {
-      rect(width - HP_BAR_WIDTH, y, width, height);
+//      image(barHP, 0, 0);
+//      image(barHP, width-bottomHP[id].width+1, 50);
+//      image(barHP, width-bottomHP[id].width+1, height-bottomHP[id].height - y, barHP.width, y);
+      
+      image(barHP, width-bottomHP[id].width+1, y+10, barHP.width, height-bottomHP[id].height - 10-y);
+
+      image(bottomHP[id], width-bottomHP[id].width+1, height-bottomHP[id].height - 10);
+      image(glassHP[id], width-glassHP[id].width, 0);
+//      rect(width - HP_BAR_WIDTH, y, width, height);
     }
   }
 
@@ -85,10 +99,10 @@ class Player {
       float px[] = new float[2];
       float py[] = new float[2];
       
-      bx[0] = bullet.x - (BULLET_SIZE / 2.0f);
-      by[0] = bullet.y - (BULLET_SIZE / 2.0f);
-      bx[1] = bullet.x + (BULLET_SIZE / 2.0f);
-      by[1] = bullet.y + (BULLET_SIZE / 2.0f);
+      bx[0] = bullet.x - (BULLET_WIDTH / 2.0f);
+      by[0] = bullet.y - (BULLET_HEIGHT / 2.0f);
+      bx[1] = bullet.x + (BULLET_WIDTH / 2.0f);
+      by[1] = bullet.y + (BULLET_HEIGHT / 2.0f);
       
       if (sideLeft) {
         px[0] = HP_BAR_WIDTH + BAR_BUFFER; 
@@ -134,6 +148,10 @@ class Player {
     link.output(2, id);
     link.output(3, hp);
     link.output(4, HP_MAX);
+    
+    if (hp <= 0) {
+      game.gameOver();
+    }
   }
 }
 

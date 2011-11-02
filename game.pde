@@ -1,8 +1,8 @@
-int HP_BAR_WIDTH = 50;
+int HP_BAR_WIDTH = 30;
 int HP_MAX = 10;
-int BAR_BUFFER = 10;
-int PADDLE_WIDTH = 20;
-int PADDLE_HEIGHT = 60;
+int BAR_BUFFER = 20;
+int PADDLE_WIDTH = 30;
+int PADDLE_HEIGHT = 82;
 int PADDLE_SPEED = 5;
 int SHOOT_INTERVAL = 2000; // ms
 
@@ -93,5 +93,9 @@ class Game {
       players[1].down();
       break;
     }
+  }
+  
+  void gameOver() {
+    setup();
   }
 }

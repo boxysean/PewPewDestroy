@@ -1,4 +1,5 @@
-int BULLET_SIZE = 15;
+int BULLET_WIDTH = 41;
+int BULLET_HEIGHT = 10;
 int BULLET_SPEED = 3;
 
 int BULLET_NEXT_ID = 0;
@@ -23,7 +24,8 @@ class Bullet {
   void draw() {
     noStroke();
     fill(game.players[playerId].colour);
-    rect(x-(BULLET_SIZE/2), y-(BULLET_SIZE/2), BULLET_SIZE, BULLET_SIZE);
+//    rect(x-(BULLET_WIDTH/2), y-(BULLET_HEIGHT/2), BULLET_WIDTH, BULLET_HEIGHT);
+    image(bulletImage[playerId], x-(BULLET_WIDTH/2), y-(BULLET_HEIGHT/2));
   }
   
   void move() {

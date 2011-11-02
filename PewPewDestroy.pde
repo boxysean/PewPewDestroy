@@ -24,23 +24,42 @@ boolean drawKinect = true;
 
 Game game = new Game();
 
+PImage[] playerImage;
+PImage[] bulletImage;
+PImage nightSky;
+
+PImage[] bottomHP;
+PImage[] glassHP;
+PImage barHP;
+
 void setup() {
   size(800,600);
   kinect = new Kinect(this);
   tracker = new KinectTracker();
   
-  link.output(1, "start"); // ** added for MaxLink
+  link.output(1, "start");
   
   game.setup();
   
   fs = new FullScreen(this);
-  fs.setResolution(width, height);
+  // DO WE NEED TO ADJUST RESOLUTION HeRE?
+//  fs.setResolution(width-10, height-10);
   fs.enter();
+  
+  playerImage = new PImage[] { loadImage("popoplayer.png"), loadImage("chochoplayer.png") };
+  bulletImage = new PImage[] { loadImage("bluebullet.png"), loadImage("redbullet.png") };
+  nightSky = loadImage("nightsky.png");
+  
+  bottomHP = new PImage[] { loadImage("bottomhealthleft.png"), loadImage("bottomhealthright.png") };
+  glassHP = new PImage[] { loadImage("glassleft.png"), loadImage("glassright.png") };
+  barHP = loadImage("healthbar.png");
 }
 
 void draw() {
+  image(nightSky, 0, 0);
+  
   if (drawKinect) {
-    background(255);
+//    background(255);
   
     // Run the tracking analysis
     tracker.track();
@@ -64,9 +83,9 @@ void draw() {
     game.players[1].moveTo(v2.y);
     
     // Display some info
-    int t = tracker.getThreshold();
-    fill(0);
-    text("threshold: " + t + "    " +  "framerate: " + (int)frameRate + "    " + "UP increase threshold, DOWN decrease threshold",10,500);
+//    int t = tracker.getThreshold();
+//    fill(0);
+//    text("threshold: " + t + "    " +  "framerate: " + (int)frameRate + "    " + "UP increase threshold, DOWN decrease threshold",10,500);
   }
   
   game.draw();
