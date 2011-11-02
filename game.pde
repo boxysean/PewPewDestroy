@@ -25,6 +25,9 @@ class Game {
     players[0] = new Player(0, "A", #FF0000, true);
     players[1] = new Player(1, "B", #0000FF, false);
     
+    BULLET_SPEED = 5;
+    SHOOT_INTERVAL = 2000; // ms
+    
     startMs = millis();
     link.output(4, "start");
     link.output(6, 1);
@@ -33,33 +36,37 @@ class Game {
   void draw() {
     int ms = millis();
     
-    if (winMs >= 0) {
-      int msElapsed = ms - winMs;
-      if (msElapsed >= 5000) {
-        gameOn = false;
-        setup();
-        winMs = -1;
-      } else {
-        image(winnerImage[winnerId], 0, 0);
+    if (gameOn) {
+      if (winMs >= 0) {
+        int msElapsed = ms - winMs;
+        if (msElapsed >= 5000) {
+          gameOn = false;
+          setup();
+          winMs = -1;
+        } else {
+          image(winnerImage[winnerId], 0, 0);
+        }
+        
+        return;
       }
-      
-      return;
     }
     
-    int msElapsed = ms - startMs;
-    
-    if (msElapsed > 30000) {
-      BULLET_SPEED = 20;
-      SHOOT_INTERVAL = 500;
-      link.output(6, 4);
-    } else if (msElapsed > 20000) {
-      BULLET_SPEED = 15;
-      SHOOT_INTERVAL = 1000;
-      link.output(6, 3);
-    } else if (msElapsed > 10000) {
-      BULLET_SPEED = 10;
-      SHOOT_INTERVAL = 1500;
-      link.output(6, 2);
+    if (gameOn) {
+      int msElapsed = ms - startMs;
+      
+      if (msElapsed > 30000) {
+        BULLET_SPEED = 20;
+        SHOOT_INTERVAL = 500;
+        link.output(6, 4);
+      } else if (msElapsed > 20000) {
+        BULLET_SPEED = 15;
+        SHOOT_INTERVAL = 1000;
+        link.output(6, 3);
+      } else if (msElapsed > 10000) {
+        BULLET_SPEED = 10;
+        SHOOT_INTERVAL = 1500;
+        link.output(6, 2);
+      }
     }
     
     if (!gameOn) {
