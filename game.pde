@@ -28,6 +28,7 @@ class Game {
     startMs = millis();
     link.output(4, "start");
     link.output(6, 1);
+    println("setup!!!");
   }
   
   void draw() {
@@ -39,7 +40,6 @@ class Game {
         gameOn = false;
         setup();
       } else {
-        println("winner image!!! " + winnerId);
         image(winnerImage[winnerId], 0, 0);
       }
       
@@ -158,5 +158,6 @@ class Game {
   void gameOver() {
     winMs = millis();
     link.output(5, "victory");
+    println("victory!!!");
   }
 }
