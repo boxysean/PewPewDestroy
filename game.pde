@@ -70,7 +70,7 @@ class Game {
     }
     
     if (!gameOn) {
-      if (players[0].y < 50 && players[1].y < 50) {
+      if (players[0].y < 50 && players[1].y < 50 && players[0].y >= 5 && players[1].y >= 5) {
         gameOn = true;
         players[0].nextShootTime = ms + SHOOT_INTERVAL;
         players[1].nextShootTime = ms + SHOOT_INTERVAL + (SHOOT_INTERVAL / 2);
