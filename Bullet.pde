@@ -1,17 +1,23 @@
 int BULLET_SIZE = 15;
-int BULLET_SPEED = 1;
+int BULLET_SPEED = 3;
 
-class Bullet {
+int BULLET_NEXT_ID = 0;
+
+class Bullet {  
   float x;
   float y;
   float speed;
   int playerId;
+  
+  int id;
   
   Bullet(float x, float y, float speed, int playerId) {
     this.x = x;
     this.y = y;
     this.speed = speed;
     this.playerId = playerId;
+    
+    this.id = BULLET_NEXT_ID++;
   }
   
   void draw() {
@@ -22,6 +28,15 @@ class Bullet {
   
   void move() {
     x += speed;
+  }
+  
+  boolean equals(Object o) {
+    try {
+      Bullet b = (Bullet) o;
+      return b.id == id;
+    } catch (Exception e) {
+      return false;
+    }
   }
 }
 

@@ -4,7 +4,7 @@ int BAR_BUFFER = 10;
 int PADDLE_WIDTH = 20;
 int PADDLE_HEIGHT = 60;
 int PADDLE_SPEED = 5;
-int SHOOT_INTERVAL = 1000; // ms
+int SHOOT_INTERVAL = 2000; // ms
 
 class Game {
   Player players[] = new Player[2];
@@ -18,12 +18,10 @@ class Game {
     players[0].y = height/2;
     players[1].y = height/2;
     
-    nextShootTime = millis() + SHOOT_INTERVAL;
+    nextShootTime = millis();
   }
   
   void draw() {
-//    background(#000000);
-    
     // if it's time, shoot a new object from player 1/2
     if (millis() >= nextShootTime) {
       nextShootTime += SHOOT_INTERVAL;
@@ -60,7 +58,7 @@ class Game {
       
       for (int j = 0; j < destroy.size(); j++) {
         Bullet bullet = (Bullet) destroy.get(j);
-        players[i].bullets.remove(bullet);
+        boolean done = players[i].bullets.remove(bullet);
       }
     }
     

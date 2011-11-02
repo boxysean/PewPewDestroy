@@ -68,63 +68,71 @@ class Player {
   void moveTo(float y) {
     // update y
     this.y = y;
-
-    //    // collision detect bullets, destroy if collided
-    //    Iterator ii = game.players[1-id].bullets.descendingIterator();
-    //    
-    //    ArrayList destroy = new ArrayList();
-    //    
-    //    while (ii.hasNext()) {
-    //      Bullet bullet = (Bullet) ii.next();
-    //      
-    //      float bx[] = new float[2];
-    //      float by[] = new float[2];
-    //      float px[] = new float[2];
-    //      float py[] = new float[2];
-    //      
-    //      bx[0] = bullet.x - (BULLET_SIZE / 2.0f);
-    //      by[0] = bullet.y - (BULLET_SIZE / 2.0f);
-    //      bx[1] = bullet.x + (BULLET_SIZE / 2.0f);
-    //      by[1] = bullet.y + (BULLET_SIZE / 2.0f);
-    //      
-    //      if (sideLeft) {
-    //        px[0] = HP_BAR_WIDTH + BAR_BUFFER; 
-    //        px[1] = HP_BAR_WIDTH + BAR_BUFFER + PADDLE_WIDTH; 
-    //      } else {
-    //        px[0] = width - (HP_BAR_WIDTH + BAR_BUFFER + PADDLE_WIDTH); 
-    //        px[1] = width - (HP_BAR_WIDTH + BAR_BUFFER);
-    //      }
-    //      
-    //      py[0] = y - (PADDLE_HEIGHT / 2.0);
-    //      py[1] = y + (PADDLE_HEIGHT / 2.0);
-    //      
-    //      // bx[0], by[0]
-    //      // bx[0], by[1]
-    //      // bx[1], by[0]
-    //      // bx[1], by[1]
-    //      
-    ////      for (int i = 0; i < 2; i++) {
-    ////        for (int j = 0; j < 2; j++) {
-    ////          if ((px[0] <= bx[i] && bx[i] <= px[1]) && (py[0] <= by[j] && by[j] <= py[1])) {
-    ////            // collides, destroy bullet
-    ////            destroy.add(bullet);
-    ////          }
-    ////        }
-    ////      }
-    //    }
-    //    
-    ////    for (int i = 0; i < destroy.size(); i++) {
-    ////      bullets.remove(destroy.get(i));
-    ////    }
+    
+    // collision detect bullets, destroy if collided
+    ListIterator ii = game.players[1-id].bullets.listIterator();
+    
+    ArrayList destroy = new ArrayList();
+    
+    int zz = 0;
+    
+    while (ii.hasNext()) {
+      Bullet bullet = (Bullet) ii.next();
+      
+      float bx[] = new float[2];
+      float by[] = new float[2];
+      float px[] = new float[2];
+      float py[] = new float[2];
+      
+      bx[0] = bullet.x - (BULLET_SIZE / 2.0f);
+      by[0] = bullet.y - (BULLET_SIZE / 2.0f);
+      bx[1] = bullet.x + (BULLET_SIZE / 2.0f);
+      by[1] = bullet.y + (BULLET_SIZE / 2.0f);
+      
+      if (sideLeft) {
+        px[0] = HP_BAR_WIDTH + BAR_BUFFER; 
+        px[1] = HP_BAR_WIDTH + BAR_BUFFER + PADDLE_WIDTH; 
+      } else {
+        px[0] = width - (HP_BAR_WIDTH + BAR_BUFFER + PADDLE_WIDTH); 
+        px[1] = width - (HP_BAR_WIDTH + BAR_BUFFER);
+      }
+      
+      py[0] = this.y - (PADDLE_HEIGHT / 2.0);
+      py[1] = this.y + (PADDLE_HEIGHT / 2.0);
+      
+      // bx[0], by[0]
+      // bx[0], by[1]
+      // bx[1], by[0]
+      // bx[1], by[1]
+      
+      all: for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+          if ((px[0] <= bx[i] && bx[i] <= px[1]) && (py[0] <= by[j] && by[j] <= py[1])) {
+            // collides, destroy bullet
+            destroy.add(bullet);
+            break all;
+          }
+        }
+      }
+    }
+    
+   
+    for (int i = 0; i < destroy.size(); i++) {
+      Bullet bullet = (Bullet) destroy.get(i);
+      boolean done = game.players[1-id].bullets.remove(bullet);
+      
+      link.output(1, "block");
+      link.output(2, id);
+    }
   }
 
   void hit() {
     hp--;
 
-    link.output(1, "hit"); // ** added for MaxLink
-    link.output(2, id); // ** added for MaxLink
-    link.output(3, hp); // ** added for MaxLink
-    link.output(4, HP_MAX); // ** added for MaxLink
+    link.output(1, "hit");
+    link.output(2, id);
+    link.output(3, hp);
+    link.output(4, HP_MAX);
   }
 }
 
