@@ -1,93 +1,80 @@
-int HP_BAR_WIDTH = 50;
-int HP_MAX = 10;
-int BAR_BUFFER = 10;
-int PADDLE_WIDTH = 20;
-int PADDLE_HEIGHT = 60;
-int PADDLE_SPEED = 5;
-int SHOOT_INTERVAL = 1000; // ms
+// Daniel Shiffman
+// Tracking the average location beyond a given depth threshold
+// Thanks to Dan O'Sullivan
+// http://www.shiffman.net
+// https://github.com/shiffman/libfreenect/tree/master/wrappers/java/processing
 
-class Game {
-  Player players[] = new Player[2];
-  
-  int nextShootTime;
-  
-  void setup() {
-    players[0] = new Player(0, "A", #FF0000, true);
-    players[1] = new Player(1, "B", #0000FF, false);
-    
-    players[0].y = height/2;
-    players[1].y = height/2;
-    
-    nextShootTime = millis() + SHOOT_INTERVAL;
-  }
-  
-  void draw() {
-//    background(#000000);
-    
-    // if it's time, shoot a new object from player 1/2
-    if (millis() >= nextShootTime) {
-      nextShootTime += SHOOT_INTERVAL;
-      for (int i = 0; i < 2; i++) {
-        players[i].shootBullet();
-      }
-    }
-  
-    // draw player 1 block
-    // draw player 2 block
-    // draw player 1 HP
-    // draw player 2 HP
-    for (int i = 0; i < 2; i++) {
-      players[i].drawPaddle();
-      players[i].drawHP();
-      
-      ArrayList destroy = new ArrayList();
-      
-      for (int j = 0; j < players[i].bullets.size(); j++) {
-        Bullet bullet = (Bullet) players[i].bullets.get(j);
-        
-        // increment bullets
-        bullet.move();
-        
-        if ((bullet.speed > 0 && bullet.x >= width - HP_BAR_WIDTH) || (bullet.speed < 0 && bullet.x <= HP_BAR_WIDTH)) {
-          // it hits the HP bar
-          players[1-i].hit();
-          destroy.add(bullet);
-        } else {
-          // draw bullets
-          bullet.draw();
-        }
-      }
-      
-      for (int j = 0; j < destroy.size(); j++) {
-        Bullet bullet = (Bullet) destroy.get(j);
-        players[i].bullets.remove(bullet);
-      }
-    }
-    
-    // time to generate powerup
-  }
-  
-  void keyPressed() {
-    switch (key) {
-    case 'q':
-    case 'Q':
-      players[0].up();
-      break;
-      
-    case 'a':
-    case 'A':
-      players[0].down();
-      break;
-      
-    case 'o':
-    case 'O':
-      players[1].up();
-      break;
-      
-    case 'l':
-    case 'L':
-      players[1].down();
-      break;
-    }
-  }
+import org.openkinect.*;
+import org.openkinect.processing.*;
+
+// Showing how we can farm all the kinect stuff out to a separate class
+KinectTracker tracker;
+// Kinect Library object
+Kinect kinect;
+
+boolean drawKinect = true;
+
+Game game = new Game();
+
+void setup() {
+  size(640,520);
+  kinect = new Kinect(this);
+  tracker = new KinectTracker();
+  game.setup();
 }
+
+void draw() {
+  if (drawKinect) {
+    background(255);
+  
+    // Run the tracking analysis
+    tracker.track();
+    // Show the image
+    tracker.display();
+  
+    // Let's draw the raw location
+    PVector v1 = tracker.getPos1();
+    fill(128,128,255,200);
+    noStroke();
+    ellipse(v1.x,v1.y,20,20);
+  
+    game.players[0].moveTo(v1.y);
+  
+    // Let's draw the "lerped" location
+    PVector v2 = tracker.getPos2();
+    fill(255,128,128,200);
+    noStroke();
+    ellipse(v2.x,v2.y,20,20);
+    
+    game.players[1].moveTo(v2.y);
+    
+    // Display some info
+    int t = tracker.getThreshold();
+    fill(0);
+    text("threshold: " + t + "    " +  "framerate: " + (int)frameRate + "    " + "UP increase threshold, DOWN decrease threshold",10,500);
+  }
+  
+  game.draw();
+}
+
+void keyPressed() {
+  int t = tracker.getThreshold();
+  if (key == CODED) {
+    if (keyCode == UP) {
+      t+=5;
+      tracker.setThreshold(t);
+    } 
+    else if (keyCode == DOWN) {
+      t-=5;
+      tracker.setThreshold(t);
+    }
+  }
+  
+  game.keyPressed();
+}
+
+void stop() {
+  tracker.quit();
+  super.stop();
+}
+
