@@ -15,29 +15,25 @@ class Game {
     players[0] = new Player(0, "A", #FF0000, true);
     players[1] = new Player(1, "B", #0000FF, false);
     
-    players[0].y = height/2;
-    players[1].y = height/2;
+    int ms = millis();
     
-    nextShootTime = millis();
+    players[0].nextShootTime = ms;
+    players[1].nextShootTime = ms + (SHOOT_INTERVAL / 2);
   }
   
   void draw() {
+    int ms = millis();
+    
     // if it's time, shoot a new object from player 1/2
-    if (millis() >= nextShootTime) {
-      nextShootTime += SHOOT_INTERVAL;
-      for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
+      if (ms >= players[i].nextShootTime) {
+        players[i].nextShootTime += SHOOT_INTERVAL;
         players[i].shootBullet();
       }
     }
   
-    // draw player 1 block
-    // draw player 2 block
-    // draw player 1 HP
-    // draw player 2 HP
-    for (int i = 0; i < 2; i++) {
-      players[i].drawPaddle();
-      players[i].drawHP();
-      
+    // draw bullets
+    for (int i = 0; i < 2; i++) {      
       ArrayList destroy = new ArrayList();
       
       for (int j = 0; j < players[i].bullets.size(); j++) {
@@ -62,7 +58,17 @@ class Game {
       }
     }
     
-    // time to generate powerup
+    // draw player 1 HP
+    // draw player 2 HP
+    for (int i = 0; i < 2; i++) {
+      players[i].drawHP();
+    }
+
+    // draw player 1 block
+    // draw player 2 block
+    for (int i = 0; i < 2; i++) {
+      players[i].drawPaddle();
+    }
   }
   
   void keyPressed() {

@@ -9,10 +9,14 @@ import org.openkinect.processing.*;
 
 import maxlink.*;
 
+import fullscreen.*; 
+
 // Showing how we can farm all the kinect stuff out to a separate class
 KinectTracker tracker;
 // Kinect Library object
 Kinect kinect;
+
+FullScreen fs;
 
 MaxLink link = new MaxLink(this, "sound");
 
@@ -28,6 +32,10 @@ void setup() {
   link.output(1, "start"); // ** added for MaxLink
   
   game.setup();
+  
+  fs = new FullScreen(this);
+  fs.setResolution(width, height);
+  fs.enter();
 }
 
 void draw() {

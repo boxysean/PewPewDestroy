@@ -5,7 +5,8 @@ class Player {
   int hp = HP_MAX;
   LinkedList bullets = new LinkedList();
   boolean sideLeft;
-  float y;
+  float y = height/2;
+  int nextShootTime;
 
   Player(int id, String name, int colour, boolean sideLeft) {
     this.id = id;
