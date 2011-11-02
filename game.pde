@@ -4,12 +4,12 @@ int BAR_BUFFER = 20;
 int PADDLE_WIDTH = 30;
 int PADDLE_HEIGHT = 82;
 int PADDLE_SPEED = 5;
-int SHOOT_INTERVAL = 2000; // ms
 
 class Game {
   Player players[] = new Player[2];
   
   int BULLET_SPEED = 5;
+  int SHOOT_INTERVAL = 2000; // ms
   
   int nextShootTime;
   
@@ -38,6 +38,8 @@ class Game {
       if (msElapsed >= 5000) {
         gameOn = false;
         setup();
+      } else {
+        image(winnerImage[winnerId], 0, 0);
       }
       
       return;
@@ -45,17 +47,17 @@ class Game {
     
     int msElapsed = ms - startMs;
     
-    if (msElapsed > 24000) {
-      BULLET_SPEED = 16;
-      SHOOT_INTERVAL = 600;
+    if (msElapsed > 30000) {
+      BULLET_SPEED = 20;
+      SHOOT_INTERVAL = 500;
       link.output(6, 4);
-    } else if (msElapsed > 17000) {
-      BULLET_SPEED = 12;
-      SHOOT_INTERVAL = 1300;
+    } else if (msElapsed > 20000) {
+      BULLET_SPEED = 15;
+      SHOOT_INTERVAL = 1000;
       link.output(6, 3);
     } else if (msElapsed > 10000) {
-      BULLET_SPEED = 8;
-      SHOOT_INTERVAL = 1600;
+      BULLET_SPEED = 10;
+      SHOOT_INTERVAL = 1500;
       link.output(6, 2);
     }
     
