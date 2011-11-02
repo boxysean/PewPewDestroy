@@ -44,7 +44,12 @@ class Game {
           setup();
           winMs = -1;
         } else {
-          image(winnerImage[winnerId], 0, 0);
+          boolean blinkOn = ((msElapsed % 1000) / 500) == 0;
+          if (blinkOn) {
+            imageMode(CENTER);
+            image(winnerImage[winnerId], width/2, height/2);
+            imageMode(CORNER);
+          }
         }
         
         return;
