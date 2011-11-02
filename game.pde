@@ -33,15 +33,11 @@ class Game {
   void draw() {
     int ms = millis();
     
-    if (winCount >= 0) {
-      int frame = frameCount - winCount;
-//      boolean blinkOn = (frame % 10) / 5 == 0;
-      boolean blinkOn = true;
-      if (frame >= 100) {
+    if (winMs >= 0) {
+      int msElapsed = ms - winMs;
+      if (msElapsed >= 5000) {
         gameOn = false;
         setup();
-      } else if (blinkOn) {
-        image(winnerImage[winnerId], 0, 0);
       }
       
       return;
@@ -63,7 +59,7 @@ class Game {
       link.output(6, 2);
     }
     
-//println("speed " + BULLET_SPEED + " interval " + SHOOT_INTERVAL);
+println("speed " + BULLET_SPEED + " interval " + SHOOT_INTERVAL);
     
     if (!gameOn) {
       if (players[0].y < 50 && players[1].y < 50) {
