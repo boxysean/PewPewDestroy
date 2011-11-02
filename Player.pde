@@ -57,7 +57,7 @@ class Player {
 
   void shootBullet() {
     int x = 0;
-    int speed = BULLET_SPEED;
+    int speed = game.BULLET_SPEED;
 
     if (sideLeft) {
       x = HP_BAR_WIDTH + BAR_BUFFER + PADDLE_WIDTH;
@@ -151,6 +151,7 @@ class Player {
     
     if (hp <= 0) {
       game.gameOver();
+      game.winnerId = 1-id;
     }
   }
 }

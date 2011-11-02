@@ -1,6 +1,5 @@
 int BULLET_WIDTH = 41;
 int BULLET_HEIGHT = 10;
-int BULLET_SPEED = 3;
 
 int BULLET_NEXT_ID = 0;
 
@@ -29,7 +28,11 @@ class Bullet {
   }
   
   void move() {
-    x += speed;
+    if (playerId == 0) {
+      x += game.BULLET_SPEED;
+    } else {
+      x -= game.BULLET_SPEED;
+    }
   }
   
   boolean equals(Object o) {

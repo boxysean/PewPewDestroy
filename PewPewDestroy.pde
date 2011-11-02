@@ -35,14 +35,14 @@ PImage barHP;
 PImage title;
 PImage subtitle;
 
+PImage[] winnerImage;
+
 boolean gameOn = false;
 
 void setup() {
   size(800,600);
   kinect = new Kinect(this);
   tracker = new KinectTracker();
-  
-  link.output(4, "start");
   
   game.setup();
   
@@ -61,6 +61,8 @@ void setup() {
   
   title = loadImage("title.png");
   subtitle = loadImage("subtitle.png");
+  
+  winnerImage = new PImage[] { loadImage("popowins.png"), loadImage("chochowins.png") };
 }
 
 void draw() {
@@ -76,7 +78,7 @@ void draw() {
   
     // Let's draw the raw location
     PVector v1 = tracker.getPos1();
-    fill(255,128,128,200);
+    fill(128,128,255,200);
     noStroke();
     ellipse(v1.x,v1.y,20,20);
   
@@ -84,7 +86,7 @@ void draw() {
   
     // Let's draw the "lerped" location
     PVector v2 = tracker.getPos2();
-    fill(128,128,255,200);
+    fill(255,128,128,200);
     noStroke();
     ellipse(v2.x,v2.y,20,20);
     
