@@ -42,7 +42,7 @@ void setup() {
   kinect = new Kinect(this);
   tracker = new KinectTracker();
   
-  link.output(1, "start");
+  link.output(4, "start");
   
   game.setup();
   
