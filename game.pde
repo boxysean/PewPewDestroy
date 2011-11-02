@@ -16,7 +16,7 @@ class Game {
 //  int winCount = 0;
 //  int winnerId = 1;
 
-  int winCount = -1;
+  int winMs = -1;
   int winnerId;
   
   int startMs;
@@ -26,7 +26,7 @@ class Game {
     players[1] = new Player(1, "B", #0000FF, false);
     
     startMs = millis();
-    link.output(1, "start");
+    link.output(4, "start");
     link.output(6, 1);
   }
   
@@ -47,11 +47,11 @@ class Game {
     
     if (msElapsed > 24000) {
       BULLET_SPEED = 16;
-      SHOOT_INTERVAL = 800;
+      SHOOT_INTERVAL = 600;
       link.output(6, 4);
     } else if (msElapsed > 17000) {
       BULLET_SPEED = 12;
-      SHOOT_INTERVAL = 1200;
+      SHOOT_INTERVAL = 1300;
       link.output(6, 3);
     } else if (msElapsed > 10000) {
       BULLET_SPEED = 8;
@@ -155,7 +155,7 @@ println("speed " + BULLET_SPEED + " interval " + SHOOT_INTERVAL);
   }
   
   void gameOver() {
-    winCount = frameCount;
+    winMs = millis();
     link.output(5, "victory");
   }
 }

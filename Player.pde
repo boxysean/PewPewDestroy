@@ -136,8 +136,7 @@ class Player {
       Bullet bullet = (Bullet) destroy.get(i);
       boolean done = game.players[1-id].bullets.remove(bullet);
       
-      link.output(1, "block");
-      link.output(2, id);
+      link.output(7, "block");
     }
   }
 
@@ -147,7 +146,6 @@ class Player {
     link.output(1, "hit");
     link.output(2, id);
     link.output(3, hp);
-    link.output(4, HP_MAX);
     
     if (hp <= 0) {
       game.gameOver();
