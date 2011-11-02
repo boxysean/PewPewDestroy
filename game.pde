@@ -14,11 +14,6 @@ class Game {
   void setup() {
     players[0] = new Player(0, "A", #FF0000, true);
     players[1] = new Player(1, "B", #0000FF, false);
-    
-    int ms = millis();
-    
-    players[0].nextShootTime = ms;
-    players[1].nextShootTime = ms + (SHOOT_INTERVAL / 2);
   }
   
   void draw() {
@@ -27,6 +22,8 @@ class Game {
     if (!gameOn) {
       if (players[0].y < 50 && players[1].y < 50) {
         gameOn = true;
+        players[0].nextShootTime = ms;
+        players[1].nextShootTime = ms + (SHOOT_INTERVAL / 2);
       }
     }
     
@@ -116,6 +113,7 @@ class Game {
   }
   
   void gameOver() {
+    gameOn = false;
     setup();
   }
 }
