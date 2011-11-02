@@ -7,19 +7,26 @@
 import org.openkinect.*;
 import org.openkinect.processing.*;
 
+import maxlink.*;
+
 // Showing how we can farm all the kinect stuff out to a separate class
 KinectTracker tracker;
 // Kinect Library object
 Kinect kinect;
+
+MaxLink link = new MaxLink(this, "sound");
 
 boolean drawKinect = true;
 
 Game game = new Game();
 
 void setup() {
-  size(640,520);
+  size(800,600);
   kinect = new Kinect(this);
   tracker = new KinectTracker();
+  
+  link.output(1, "start"); // ** added for MaxLink
+  
   game.setup();
 }
 

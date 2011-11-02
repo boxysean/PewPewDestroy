@@ -5,6 +5,10 @@ class KinectTracker {
   // Size of kinect image
   int kw = 640;
   int kh = 480;
+  
+  int tw = 800;
+  int th = 600;
+  
   int threshold = 745;
 
   // Raw location
@@ -28,7 +32,7 @@ class KinectTracker {
     // but this example is just demonstrating everything
     kinect.processDepthImage(true);
 
-    display = createImage(kw,kh,PConstants.RGB);
+    display = createImage(tw,th,PConstants.RGB);
 
     loc1 = new PVector(0,0);
     loc2 = new PVector(kw/2,0);
@@ -47,10 +51,13 @@ class KinectTracker {
     float sumY = 0;
     float count = 0;
 
-    for(int x = 0; x < kw/2; x++) {
-      for(int y = 0; y < kh; y++) {
+    for(int x = 0; x < tw/2; x++) {
+      for(int y = 0; y < th; y++) {
+        int xx = (kw * x) / tw;
+        int yy = (kh * y) / th;
+        
         // Mirroring the image
-        int offset = kw-x-1+y*kw;
+        int offset = kw-xx-1+yy*kw;
         // Grabbing the raw depth
         int rawDepth = depth[offset];
 
@@ -67,10 +74,13 @@ class KinectTracker {
       loc1 = new PVector(sumX/count,sumY/count);
     }
     sumX=sumY=count=0;
-    for(int x = kw/2; x < kw; x++) {
-      for(int y = 0; y < kh; y++) {
+    for(int x = tw/2; x < tw; x++) {
+      for(int y = 0; y < th; y++) {
+        int xx = (kw * x) / tw;
+        int yy = (kh * y) / th;
+
         // Mirroring the image
-        int offset = kw-x-1+y*kw;
+        int offset = kw-xx-1+yy*kw;
         // Grabbing the raw depth
         int rawDepth = depth[offset];
 
@@ -106,10 +116,13 @@ class KinectTracker {
     // Going to rewrite the depth image to show which pixels are in threshold
     // A lot of this is redundant, but this is just for demonstration purposes
     display.loadPixels();
-    for(int x = 0; x < kw; x++) {
-      for(int y = 0; y < kh; y++) {
+    for(int x = 0; x < tw; x++) {
+      for(int y = 0; y < th; y++) {
+        int xx = (kw * x) / tw;
+        int yy = (kh * y) / th;
+
         // mirroring image
-        int offset = kw-x-1+y*kw;
+        int offset = kw-xx-1+yy*kw;
         // Raw depth
         int rawDepth = depth[offset];
 
@@ -119,7 +132,8 @@ class KinectTracker {
           display.pixels[pix] = color(150,50,50);
         } 
         else {
-          display.pixels[pix] = img.pixels[offset];
+//          display.pixels[pix] = img.pixels[offset];
+          display.pixels[pix] = #000000;
         }
       }
     }
