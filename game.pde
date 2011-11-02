@@ -39,6 +39,7 @@ class Game {
         gameOn = false;
         setup();
       } else {
+        println("winner image!!! " + winnerId);
         image(winnerImage[winnerId], 0, 0);
       }
       
@@ -61,13 +62,11 @@ class Game {
       link.output(6, 2);
     }
     
-println("speed " + BULLET_SPEED + " interval " + SHOOT_INTERVAL);
-    
     if (!gameOn) {
       if (players[0].y < 50 && players[1].y < 50) {
         gameOn = true;
-        players[0].nextShootTime = ms;
-        players[1].nextShootTime = ms + (SHOOT_INTERVAL / 2);
+        players[0].nextShootTime = ms + SHOOT_INTERVAL;
+        players[1].nextShootTime = ms + SHOOT_INTERVAL + (SHOOT_INTERVAL / 2);
       }
     }
     
