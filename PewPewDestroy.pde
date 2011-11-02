@@ -32,6 +32,11 @@ PImage[] bottomHP;
 PImage[] glassHP;
 PImage barHP;
 
+PImage title;
+PImage subtitle;
+
+boolean gameOn = false;
+
 void setup() {
   size(800,600);
   kinect = new Kinect(this);
@@ -44,7 +49,7 @@ void setup() {
   fs = new FullScreen(this);
   // DO WE NEED TO ADJUST RESOLUTION HeRE?
 //  fs.setResolution(width-10, height-10);
-  fs.enter();
+//  fs.enter();
   
   playerImage = new PImage[] { loadImage("popoplayer.png"), loadImage("chochoplayer.png") };
   bulletImage = new PImage[] { loadImage("bluebullet.png"), loadImage("redbullet.png") };
@@ -53,6 +58,9 @@ void setup() {
   bottomHP = new PImage[] { loadImage("bottomhealthleft.png"), loadImage("bottomhealthright.png") };
   glassHP = new PImage[] { loadImage("glassleft.png"), loadImage("glassright.png") };
   barHP = loadImage("healthbar.png");
+  
+  title = loadImage("title.png");
+  subtitle = loadImage("subtitle.png");
 }
 
 void draw() {

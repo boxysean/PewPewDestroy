@@ -24,44 +24,64 @@ class Game {
   void draw() {
     int ms = millis();
     
-    // if it's time, shoot a new object from player 1/2
-    for (int i = 0; i < 2; i++) {
-      if (ms >= players[i].nextShootTime) {
-        players[i].nextShootTime += SHOOT_INTERVAL;
-        players[i].shootBullet();
-      }
-    }
-  
-    // draw bullets
-    for (int i = 0; i < 2; i++) {      
-      ArrayList destroy = new ArrayList();
-      
-      for (int j = 0; j < players[i].bullets.size(); j++) {
-        Bullet bullet = (Bullet) players[i].bullets.get(j);
-        
-        // increment bullets
-        bullet.move();
-        
-        if ((bullet.speed > 0 && bullet.x >= width - HP_BAR_WIDTH) || (bullet.speed < 0 && bullet.x <= HP_BAR_WIDTH)) {
-          // it hits the HP bar
-          players[1-i].hit();
-          destroy.add(bullet);
-        } else {
-          // draw bullets
-          bullet.draw();
-        }
-      }
-      
-      for (int j = 0; j < destroy.size(); j++) {
-        Bullet bullet = (Bullet) destroy.get(j);
-        boolean done = players[i].bullets.remove(bullet);
+    if (!gameOn) {
+      if (players[0].y < 50 && players[1].y < 50) {
+        gameOn = true;
       }
     }
     
+    if (!gameOn) {
+      imageMode(CENTER);
+      image(title, 400, 300, 350, 171);
+      imageMode(CORNER);
+      image(subtitle, 0, height-45);
+    }
+    
+    if (gameOn) {
+      // if it's time, shoot a new object from player 1/2
+      for (int i = 0; i < 2; i++) {
+        if (ms >= players[i].nextShootTime) {
+          players[i].nextShootTime += SHOOT_INTERVAL;
+          players[i].shootBullet();
+        }
+      }
+    }
+  
+    if (gameOn) {
+      // draw bullets
+      for (int i = 0; i < 2; i++) {      
+        ArrayList destroy = new ArrayList();
+        
+        for (int j = 0; j < players[i].bullets.size(); j++) {
+          Bullet bullet = (Bullet) players[i].bullets.get(j);
+          
+          // increment bullets
+          bullet.move();
+          
+          if ((bullet.speed > 0 && bullet.x >= width - HP_BAR_WIDTH) || (bullet.speed < 0 && bullet.x <= HP_BAR_WIDTH)) {
+            // it hits the HP bar
+            players[1-i].hit();
+            destroy.add(bullet);
+          } else {
+            // draw bullets
+            bullet.draw();
+          }
+        }
+        
+        for (int j = 0; j < destroy.size(); j++) {
+          Bullet bullet = (Bullet) destroy.get(j);
+          boolean done = players[i].bullets.remove(bullet);
+        }
+      }
+    }
+    
+    
     // draw player 1 HP
     // draw player 2 HP
-    for (int i = 0; i < 2; i++) {
-      players[i].drawHP();
+    if (gameOn) {
+      for (int i = 0; i < 2; i++) {
+        players[i].drawHP();
+      }
     }
 
     // draw player 1 block
